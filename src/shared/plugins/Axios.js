@@ -20,7 +20,7 @@ const AuthService = {
     login,
 };
 
-const localhost = "54.197.65.57";
+const localhost = "localhost";
 
 export {
     localhost,
