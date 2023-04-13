@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0aee9474.css",
+    "main.js": "/static/js/main.87ac8c70.js",
+    "static/media/Noe.png": "/static/media/Noe.fd8267b9dc2a527db9a8.png",
+    "static/media/LogoMiniUtez.jpg": "/static/media/LogoMiniUtez.b81557058bda1529ad9a.jpg",
+    "static/media/Equis.png": "/static/media/Equis.33c99eea61ca91f72d98.png",
+    "index.html": "/index.html",
+    "main.0aee9474.css.map": "/static/css/main.0aee9474.css.map",
+    "main.87ac8c70.js.map": "/static/js/main.87ac8c70.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0aee9474.css",
+    "static/js/main.87ac8c70.js"
+  ]
+}
