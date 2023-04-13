@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const URLSERVIS = axios.create({
-    baseURL : "http://54.197.65.57:8080/api/"
+    baseURL : `http://localhost:8080/api/`
 });
 
 const login = (email, password) => {
