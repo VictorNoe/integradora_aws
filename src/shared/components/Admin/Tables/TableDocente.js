@@ -14,7 +14,6 @@ export const TablesDocentes=()=> {
     const [state, setState] = useState(false)
     const [Email, setEmail] = useState(null)
     const [valiClass, setValiClas] = useState([])
-    const [statusUser, setStatusUser] = useState(false)
 
     //actualizar
     const statusUsers = async (id,status,name,lastname,role,password) => {
