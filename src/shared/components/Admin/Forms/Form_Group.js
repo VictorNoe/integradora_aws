@@ -110,12 +110,12 @@ export const Form_Group = (props) =>{
                         text: "Grupo Actualizado",
                         icon: "success",
                         button: false,
-                        timer: 3000
+                        timer: 1000
                     });
                     onGroup()
                     setTimeout(()=>{
                         window.location.reload()
-                    },3000)
+                    },1000)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -137,7 +137,7 @@ export const Form_Group = (props) =>{
                             text: "Este grupo ya existe",
                             icon: "error",
                             button: false,
-                            timer : 3000
+                            timer : 1000
                         })
                 )
             }
@@ -169,12 +169,12 @@ export const Form_Group = (props) =>{
                         text: "Grupo registrado",
                         icon: "success",
                         button: false,
-                        timer : 3000
+                        timer : 1000
                     });
                     onGroup()
                     setTimeout(()=>{
                         window.location.reload()
-                    },3000)
+                    },1000)
                 })
                 .catch((err)=> {
                     console.log(err)
@@ -220,7 +220,7 @@ export const Form_Group = (props) =>{
                             <Form.Label required type="text">Carrera:</Form.Label>
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                             <Form.Select aria-label="Default select example" defaultValue={career} value={career} onChange={(e)=>setCareer(e.target.value)}>
-                                <option>Default select</option>
+                                <option>Seleciona carrera</option>
                                 {careerGet.map((carrerMap)=>(
                                     <option value={carrerMap.id}>{carrerMap.name}</option>
                                 ))}

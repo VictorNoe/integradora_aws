@@ -150,7 +150,7 @@ export const TableStudens = () => {
     //Valida el tiempo
     const times = () => {
         const time = new Date();
-        time.setSeconds(time.getSeconds() + 10);
+        time.setSeconds(time.getSeconds() + 20);
         restart(time)
     }
 
@@ -203,7 +203,10 @@ export const TableStudens = () => {
                 }
             }
         }
-        return ((contador2/contador1) * 100).toFixed(2)
+        if (contador1 !== 0 && contador2 !== 0){
+            return ((contador2/contador1) * 100).toFixed(2)
+        }
+            return (0).toFixed(2)
     }
 
     //actualizar asistencia de todos
@@ -242,6 +245,7 @@ export const TableStudens = () => {
             }
         }
     }
+    console.log(inableeDoce)
 
     if (minutes === 0 && seconds === 0){
         updateQr()
@@ -254,7 +258,7 @@ export const TableStudens = () => {
                 <div style={{backgroundColor:"#D9D9D9"}}>
                     <Navbar style={{backgroundColor:"#255770FF"}}>
                         <div className="container-fluid">
-                            <Navbar.Brand style={{color:"#FFF"}}>{clases.subject.acronim}</Navbar.Brand>
+                            <Navbar.Brand style={{color:"#FFF"}}>{clases.subject.name} {clases.group.degree}-{clases.group.letter}</Navbar.Brand>
                             <Navbar.Toggle/>
                             <Navbar.Collapse className="justify-content-end">
                                 {
@@ -294,10 +298,12 @@ export const TableStudens = () => {
                             <Table bordered hober className="mt-3">
                                 <thead style={{backgroundColor:"#255770FF",borderColor:"black",color:"white"}}>
                                 <tr key={studens.id}>
-                                    <th>Matricula</th>
-                                    <th style={{width:"10%"}}>____Nombres_y_apellidos____</th>
-                                    <th>Fecha</th>
-                                    <th>Porcentaje</th>
+                                    <th style={{width:"50px"}}>Matricula</th>
+                                    <th style={{width:"50px"}}>____Nombres_y_apellidos____</th>
+                                    <th>
+                                        fecha
+                                    </th>
+                                    <th style={{width:"40px"}}>Porcentaje</th>
                                 </tr>
                                 </thead>
                                 { clases.status === 1
@@ -357,7 +363,7 @@ export const TableStudens = () => {
                                                                             style={{fontSize:"20px",width:"20px",textAlign:"center",border:"hidden",backgroundColor:"white"}}
                                                                             type="text"
                                                                             className="form-control"
-                                                                            defaultValue ={(asistens.status === 0 && "/")||(asistens.status === 1 && ".")||(asistens.status === 2 && "x")}
+                                                                            defaultValue ={(asistens.status === 0 && "/")||(asistens.status === 1 && "•")||(asistens.status === 2 && "x")}
                                                                             className="text-center"
                                                                             disabled
                                                                         />

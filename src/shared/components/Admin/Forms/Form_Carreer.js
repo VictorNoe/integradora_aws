@@ -77,13 +77,17 @@ export const Form_Carreer = (props) => {
                 .then(async (response) =>
                     await response.json())
                 .then((data) => {
-                    console.log(data.data)
                     swal({
-                        title: "Asistencias eliminadas",
-                        text: "Las asistencias se han eliminado",
+                        title: "Agregado Exitoso",
+                        text: "Se agrego la carrera",
                         icon: "success",
                         button: false,
-                    });
+                        timer: 1000
+                    })
+                    onHide()
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -132,15 +136,15 @@ export const Form_Carreer = (props) => {
                             <Form.Control required type="text" placeholder="Base de Datos" defaultValue={name} value={name} onChange={(e) => setName(e.target.value)} />
                         </Form.Group>
 
-                        <Modal.Footer>
-                            {id === null
-                                ? <Button variant="success" type='submit' onClick={() => addCareer()}>Registrar</Button>
-                                : <Button variant="success" type='submit' onClick={() => update()}>Actualizar</Button>
-                            }
-                            <Button variant="danger" onClick={() => (allData())}>Cancelar</Button>
-                        </Modal.Footer>
                     </Form>
                 </Modal.Body>
+                <Modal.Footer>
+                    {id === null
+                        ? <Button variant="success" type='submit' onClick={() => addCareer()}>Registrar</Button>
+                        : <Button variant="success" type='submit' onClick={() => update()}>Actualizar</Button>
+                    }
+                    <Button variant="danger" onClick={() => (allData())}>Cancelar</Button>
+                </Modal.Footer>
             </Modal>
         </div>
     )

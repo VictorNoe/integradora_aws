@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import {all} from "axios";
 import {localhost} from "../../../plugins/Axios";
+import swal from "sweetalert";
 
 
 export const Form_Teacher = (props) => {
@@ -61,7 +62,16 @@ export const Form_Teacher = (props) => {
                 .then(async (response) =>
                     await response.json())
                 .then((data) => {
-                    console.log(data.error)
+                    swal({
+                        title: "Actulización Exitoso",
+                        text: "Maestro actualizado",
+                        icon: "success",
+                        button: false,
+                        timer: 1000
+                    });
+                    setTimeout(()=>{
+                        window.location.reload()
+                    },1000)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -90,7 +100,17 @@ export const Form_Teacher = (props) => {
                 .then(async (response) =>
                     await response.json())
                 .then((data) => {
-                    console.log(data.data)
+                    swal({
+                        title: "Agregado Exitoso",
+                        text: "Se agrego el maestro",
+                        icon: "success",
+                        button: false,
+                        timer: 1000
+                    })
+                    onHide()
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -150,15 +170,15 @@ export const Form_Teacher = (props) => {
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                             <Form.Control required type="password" placeholder="Contraseña" defaultValue={password} value={password} onChange={(e) => setPassword(e.target.value)} />
                         </Form.Group>
-                        <Modal.Footer>
-                            {Email === null
-                                ? <Button variant="success" type='submit' onClick={() => addTeacher()}>Registrar</Button>
-                                : <Button variant="success" type='submit' onClick={() => update()}>Actualizar</Button>
-                            }
-                            <Button variant="danger" onClick={()=>(allData())}>Cancelar</Button>
-                        </Modal.Footer>
                     </Form>
                 </Modal.Body>
+                <Modal.Footer>
+                    {Email === null
+                        ? <Button variant="success" type='submit' onClick={() => addTeacher()}>Registrar</Button>
+                        : <Button variant="success" type='submit' onClick={() => update()}>Actualizar</Button>
+                    }
+                    <Button variant="danger" onClick={()=>(allData())}>Cancelar</Button>
+                </Modal.Footer>
             </Modal>
         </div>
     )

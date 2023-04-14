@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Form , Modal } from "react-bootstrap";
 import {localhost, URLSERVIS} from "../../../plugins/Axios";
+import swal from "sweetalert";
 
 
 export const Form_Class = (props) =>{
@@ -11,6 +12,7 @@ export const Form_Class = (props) =>{
     const [docente, setDocente] = useState([])
     const [subject, setSubject] = useState([])
     const [grup, setGrup] = useState([])
+    const [clas, setClas] = useState([])
 
     const allData = () => {
         props.onHide()
@@ -21,27 +23,52 @@ export const Form_Class = (props) =>{
         }, 500)
     }
 
+    const getDocente = async () => {
+        const res = await URLSERVIS("users/")
+        setDocente(res.data.data)
+    }
+    const getSubject = async () => {
+        const res = await URLSERVIS("subject/")
+        setSubject(res.data.data)
+    }
+    const getGrupos = async () => {
+        const res = await URLSERVIS("group/")
+        setGrup(res.data.data)
+    }
+    const getClass= async () => {
+        const res = await URLSERVIS("clas/")
+        setClas(res.data.data)
+    }
+
     useEffect(()=> {
-        const getDocente = async () => {
-            const res = await URLSERVIS("users/")
-            setDocente(res.data.data)
-        }
-        const getSubject = async () => {
-            const res = await URLSERVIS("subject/")
-            setSubject(res.data.data)
-        }
-        const getGrupos = async () => {
-            const res = await URLSERVIS("group/")
-            setGrup(res.data.data)
-        }
         getGrupos()
         getDocente()
         getSubject()
+        getClass()
     },[])
 
+    console.log(clas)
     const addClass = async () => {
-        if(group !== null && materia !== null && profesor !== null){
+        getGrupos()
+        getDocente()
+        getSubject()
+        getClass()
+        let status = false
+        for (let i = 0; i < clas.length; i++) {
+            console.log(clas[i].group.id)
+            if(clas[i].group.id === parseInt(group) && clas[i].subject.id === parseInt(materia)) {
+                return status = true , swal({
+                    title: "Registro fallida",
+                    text: "Esta clase ya existe",
+                    icon: "error",
+                    button: false,
+                    timer: 1000
+                })
+            }
+        }
 
+        console.log(status)
+        if(group !== null && materia !== null && profesor !== null && status !== true){
             await fetch(`http://${localhost}:8080/api/clas/`,{
                 method: "POST",
                 headers: {
@@ -66,7 +93,16 @@ export const Form_Class = (props) =>{
                 .then( async (response)=>
                     await response.json())
                 .then((data)=>{
-                    console.log()(data.data)
+                    swal({
+                        title: "Registro Exitoso",
+                        text: "Clase agregada",
+                        icon: "success",
+                        button: false,
+                        timer: 1000
+                    });
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },1000)
                 })
                 .catch((err)=> {
                     console.log(err)
@@ -94,58 +130,57 @@ export const Form_Class = (props) =>{
           aria-labelledby="contained-modal-title-vcenter"
           centered
       >
-        <Modal.Header>
-          <Modal.Title>Nuevo Registro Clase</Modal.Title>
-        </Modal.Header>
+          <Modal.Header>
+              <Modal.Title>Nuevo Registro Clase</Modal.Title>
+          </Modal.Header>
 
-        <Modal.Body>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Modal.Body>
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
-                <Form.Group className="mb-2" controlId="Name">
-                    <Form.Label required type="text">Docente:</Form.Label>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    <Form.Select required aria-label="Default select example" value={profesor} onChange={(e) => (setProfesor(e.target.value))}>
-                        <option>Selecciona Docente</option>
-                        {docente.map((docente)=>(
-                            <>
-                                {
-                                    (docente.status === 1 && docente.role === 1)
-                                    &&
-                                    <option value={docente.email}>{docente.email}</option>
-                                }
-                            </>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
+                  <Form.Group className="mb-2" controlId="Name">
+                      <Form.Label required type="text">Docente:</Form.Label>
+                      <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                      <Form.Select required aria-label="Default select example" value={profesor} onChange={(e) => (setProfesor(e.target.value))}>
+                          <option>Selecciona Docente</option>
+                          {docente.map((docente)=>(
+                              <>
+                                  {
+                                      (docente.status === 1 && docente.role === 1)
+                                      &&
+                                      <option value={docente.email}>{docente.name} {docente.lastname}</option>
+                                  }
+                              </>
+                          ))}
+                      </Form.Select>
+                  </Form.Group>
 
-                <Form.Group className="mb-2" controlId="Lastname">
-                    <Form.Label>Materia:</Form.Label>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    <Form.Select required aria-label="Default select example"  value={materia} onChange={(e) => (setMateria(e.target.value))}>
-                        <option>Selecciona Materia</option>
-                        {subject.map((subject)=>(
-                            <option value={subject.id}>{subject.name}</option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
+                  <Form.Group className="mb-2" controlId="Lastname">
+                      <Form.Label>Materia:</Form.Label>
+                      <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                      <Form.Select required aria-label="Default select example"  value={materia} onChange={(e) => (setMateria(e.target.value))}>
+                          <option>Selecciona Materia</option>
+                          {subject.map((subject)=>(
+                              <option value={subject.id}>{subject.name}</option>
+                          ))}
+                      </Form.Select>
+                  </Form.Group>
 
-                <Form.Group className="mb-2" controlId="Email">
-                    <Form.Label>Grupo:</Form.Label>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    <Form.Select required aria-label="Default select example" value={group} onChange={(e) => (setGroup(e.target.value))}>
-                        <option>Selecciona Grupo</option>
-                        {grup.map((grup)=>(
-                            <option value={grup.id}>{grup.degree}-.{grup.letter} {grup.career.acronim}</option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
-
-                <Modal.Footer>
-                    <Button variant="success" type='submit' onClick={()=> addClass()}>Registrar</Button>
-                    <Button variant="danger" onClick={()=>(allData())}>Cancelar</Button>
-                </Modal.Footer>
-            </Form>
-        </Modal.Body>
+                  <Form.Group className="mb-2" controlId="Email">
+                      <Form.Label>Grupo:</Form.Label>
+                      <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                      <Form.Select required aria-label="Default select example" value={group} onChange={(e) => (setGroup(e.target.value))}>
+                          <option>Selecciona Grupo</option>
+                          {grup.map((grup)=>(
+                              <option value={grup.id}>{grup.degree}-.{grup.letter} {grup.career.acronim}</option>
+                          ))}
+                      </Form.Select>
+                  </Form.Group>
+              </Form>
+          </Modal.Body>
+          <Modal.Footer>
+              <Button variant="success" type='submit' onClick={()=> addClass()}>Registrar</Button>
+              <Button variant="danger" onClick={()=>(allData())}>Cancelar</Button>
+          </Modal.Footer>
       </Modal>
     </div>
 )}

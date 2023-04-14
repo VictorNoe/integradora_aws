@@ -1,4 +1,4 @@
-import Noe from "../../../assets/img/Noe.png"
+import Noe from "../../../assets/img/iconoLogin.png"
 import {Route, Routes, useNavigate} from "react-router-dom";
 import {Cards} from "./Cards";
 import {TableStudens} from "./TableStudens";

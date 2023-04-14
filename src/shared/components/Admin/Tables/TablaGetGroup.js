@@ -159,7 +159,7 @@ export const TablaGetGroup = () => {
                 </div>
                 <div>
                     <div style={{height:"75vh"}}>
-                        <div className="col-12 border border-1 border-dark" style={{overflowY: "scroll", overflowX:"hidden", height:"100%"}}>
+                        <div className="col-12 border border-1 border-dark" style={{overflowY: "auto", overflowX:"auto", height:"100%", width:"100%"}}>
                             <Table bordered hover style={{borderColor:"black"}}>
                                 <thead style={{backgroundColor:"#476077",borderColor:"black",color:"white"}}>
                                 <tr>
