@@ -13,14 +13,17 @@ export const TablesCarrera = () => {
     const [id, setId] = useState(null)
 
     useEffect(()=>{
-        fetch(URL).then((response)=>{return response.json()})
-        .then((data)=> {
-            console.log(data.data);
-            setCarrera(data.data)
-        })
-        .catch((error)=>{
-            console.log(error.message)
-        })
+        const getCarrer = async () => {
+            await fetch(URL).then((response)=>{return response.json()})
+                .then((data)=> {
+                    console.log(data.data);
+                    setCarrera(data.data)
+                })
+                .catch((error)=>{
+                    console.log(error.message)
+                })
+        }
+        getCarrer()
     }, [])
 
     return (
@@ -36,9 +39,9 @@ export const TablesCarrera = () => {
                     </tr>
                     </thead>
                     <tbody style={styles.Text}>
-                    {Carrera.map((post)=>
+                    {Carrera.map((post,index)=>
                         (
-                            <tr>
+                            <tr key={index}>
                                 <td>{post.id}</td>
                                 <td>{post.acronim}</td>
                                 <td>{post.name}</td>

@@ -103,13 +103,13 @@ export const TablesDocentes=()=> {
                 </tr>
                 </thead>
                 <tbody style={styles.Text}>
-                {Docente.map((post)=>
+                {Docente.map((post,index)=>
                     (
                         <>
                             {
                                 post.role === 1
                                 &&
-                                <tr key={post.id}>
+                                <tr key={index}>
                                     <td>{post.name}</td>
                                     <td>{post.lastname}</td>
                                     <td>{post.email}</td>

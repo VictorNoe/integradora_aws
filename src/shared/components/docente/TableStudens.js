@@ -1,5 +1,5 @@
 import {Outlet, useNavigate, useParams} from "react-router-dom";
-import {Form, Navbar, Table} from "react-bootstrap";
+import {Navbar, Table} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import React, {useEffect, useState} from "react";
 import {Loading} from "../Loading";
@@ -16,9 +16,6 @@ export const TableStudens = () => {
 
     const { seconds, minutes, restart } = useTimer({ time, onExpire: () => console.warn('onExpire called')});
     const fecha = new Date();
-    const [ano, setAno] = useState("");
-    const [mes, setMes] = useState("");
-    const [dia, setDia] = useState("");
     const [post, setPost] = useState([]);
     const [clases, setClases] = useState([]);
     const [studens, setStudens] = useState([]);
@@ -27,6 +24,7 @@ export const TableStudens = () => {
     const [state, setState] = useState(true);
     const [getQR, setGetQR] = useState([]);
     const [inableeDoce, setInableeDoce] = useState([]);
+    const [fechas, setFechas] = useState([]);
 
     useEffect(() => {
 
@@ -65,11 +63,9 @@ export const TableStudens = () => {
             })
         }
 
-        getAsistence()
+        getDate()
 
-        setAno(fecha.getFullYear())
-        setMes(fecha.getMonth())
-        setDia(fecha.getDay())
+        getAsistence()
 
         if (clases.status !== 1){
             setTimeout(()=>{
@@ -79,8 +75,18 @@ export const TableStudens = () => {
 
     },  [1000]);
 
+    //
+    const getDate = () => {
+        fetch(`http://${localhost}:8080/api/qr/`).then((res) => {
+            return res.json();
+        }).then((resp) => {
+            setFechas(resp.data);
+        })
+    }
+
     //Update status
     const updateQr = async () => {
+        console.log(getQR)
         await fetch(`http://${localhost}:8080/api/qr/`, {
             method: "PUT",
             headers: {
@@ -88,18 +94,17 @@ export const TableStudens = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "id": `${getQR.id}`,
-                "date": `${getQR.date}`,
+                "id": getQR.id,
+                "date": getQR.date,
                 "status": 0,
                 "clas": {
-                    "id": `${getQR.idClas}`
+                    "id": getQR.clas.id
                 }
             }),
         })
             .then((response) =>
                 response.json())
             .then((data) => {
-                console.log(data.data)
             }).catch((err) => {
                 console.log(err)
             });
@@ -125,7 +130,7 @@ export const TableStudens = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "date": `${dia}-${mes}-${ano}`,
+                "date": `${fecha.toISOString()}`,
                 "status": 1,
                 "clas": {
                     "id": `${clases.id}`,
@@ -142,6 +147,7 @@ export const TableStudens = () => {
                 setGetQR(data.data)
                 setPost(data.data);
                 getAsistence()
+                getDate()
             }).catch((err) => {
                 console.log(err)
             });
@@ -150,7 +156,7 @@ export const TableStudens = () => {
     //Valida el tiempo
     const times = () => {
         const time = new Date();
-        time.setSeconds(time.getSeconds() + 20);
+        time.setSeconds(time.getSeconds() + 15);
         restart(time)
     }
 
@@ -190,7 +196,6 @@ export const TableStudens = () => {
 
     //Procentajes asistencias
     const asissPorcc = (id) => {
-        console.log(id)
         let contador1 = 0;
         let contador2 = 0;
         for (let i = 0; i < asistens.length; i++) {
@@ -210,10 +215,9 @@ export const TableStudens = () => {
     }
 
     //actualizar asistencia de todos
-    const updateInvididual = (asistencia,id) => {
-        console.log(id)
+    const updateInvididual = (asistencia1,id) => {
         for (let i = 0; i < asistens.length; i++) {
-            if (asistencia === 'x'){
+            if (asistencia1 === 'x'){
                 if (asistens[i].id === id && asistens[i].status === 0){
                     fetch(`http://${localhost}:8080/api/asistence/status`, {
                         method: "PUT",
@@ -236,20 +240,24 @@ export const TableStudens = () => {
                         .then(async (response) =>
                             await response.json())
                         .then((data) => {
-                            console.log(data.data)
+                            getDate()
+                            getAsistence()
                         })
                         .catch((err) => {
+                            getDate()
                             getAsistence()
                         });
                 }
             }
+            getDate()
+            getAsistence()
         }
     }
-    console.log(inableeDoce)
 
-    if (minutes === 0 && seconds === 0){
-        updateQr()
+    if (modalShow === false){
+            updateQr()
     }
+
     if(!clases.subject) return <Loading/>
 
     return(
@@ -290,51 +298,63 @@ export const TableStudens = () => {
                             mins = {minutes}
                             localhost = {localhost}
                             asistens = {asistens}
-                            getAsisten = {()=>(getAsistence())}
+                            getAsisten = {()=>(getAsistence(),getDate())}
                         />
                     </Navbar>
                     <div className="container-fluid mb-3">
                         <div style={{overflowY: "hidden", overflowX:"auto", width:"100%"}}>
                             <Table bordered hober className="mt-3">
                                 <thead style={{backgroundColor:"#255770FF",borderColor:"black",color:"white"}}>
-                                <tr key={studens.id}>
-                                    <th style={{width:"50px"}}>Matricula</th>
-                                    <th style={{width:"50px"}}>____Nombres_y_apellidos____</th>
-                                    <th>
-                                        fecha
-                                    </th>
+                                <tr>
+                                    <th style={{width:"50px", textAlign:"center"}}>Matricula</th>
+                                    <th>Nombres<a style={{color:"transparent"}}>_</a>completo<a style={{color:"transparent"}}>_______________</a></th>
+                                    <>
+                                        {fechas.map((fechas,index)=>(
+                                            <>
+                                                {asistens.map((ass)=>(
+                                                    <>
+                                                        {(ass.status <= 2 && fechas.idClas === parseInt(id) && ass.qr_id === fechas.id && inableeDoce[0].student_id === ass.student_id)
+                                                            &&
+                                                            <th key={index} style={{width:"70px",textAlign:"center"}}>{` ${fechas.date.slice(5,10)}`}</th>}
+                                                    </>
+                                                ))}
+                                            </>
+                                        ))}
+                                    </>
                                     <th style={{width:"40px"}}>Porcentaje</th>
                                 </tr>
                                 </thead>
                                 { clases.status === 1
                                     ?
                                     <tbody style={{backgroundColor:"#FFF",borderColor:"black"}} className="mb-3">
-                                    {studens.map((studen) => (
+                                    {studens.map((studen,index) => (
                                         <>
                                             {((studen.group.degree === clases.group.degree) && (studen.group.letter === clases.group.letter))
                                                 &&
-                                                <tr key={studen.id}>
+                                                <tr key={index}>
                                                     <td>{studen.id}</td>
                                                     <td>{`${studen.name} ${studen.lastname}`}</td>
-                                                    <td>
+                                                    <>
                                                         {asistens.map((asistens)=>(
                                                             <>
                                                                 { (studen.id === asistens.student_id && asistens.status <= 2)
                                                                     &&
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         <input
-                                                                            style={{fontSize:"20px",width:"20px",textAlign:"center",border:"hidden"}}
+                                                                            style={modalShow !== true ? {fontSize:"20px",width:"50px",border:"hidden",outline:"none"} : {fontSize:"20px",width:"50px",textAlign:"center",border:"hidden", backgroundColor:"white"}}
                                                                             type="text"
                                                                             className="form-control"
-                                                                            defaultValue ={(asistens.status === 0 && "/")||(asistens.status === 1 && ".")||(asistens.status === 2 && "x")}
+                                                                            defaultValue ={(asistens.status === 0 && "/")||(asistens.status === 1 && "•")||(asistens.status === 2 && "x")}
                                                                             className="text-center"
+                                                                            maxlength="1"
                                                                             onChange={(e)=>(updateInvididual(e.target.value,asistens.id))}
+                                                                            disabled={modalShow !== true ? false : true}
                                                                         />
                                                                     </td>
                                                                 }
                                                             </>
                                                         ))}
-                                                    </td>
+                                                    </>
                                                     <td>
                                                         <button className={80.0 <= asissPorcc(studen.id) ? "btn btn-secondary" : "btn btn-warning"} disabled>
                                                             {asissPorcc(studen.id)}%
@@ -348,21 +368,20 @@ export const TableStudens = () => {
                                     </tbody>
                                     :
                                     <tbody style={{backgroundColor:"#FFF",borderColor:"black"}} className="mb-3">
-                                    {inableeDoce.map((studen) => (
+                                    {inableeDoce.map((studen,index) => (
                                         <>
-                                                <tr key={studen.student_id}>
+                                                <tr key={index}>
                                                     <td>{studen.student_id}</td>
                                                     <td>{`${studen.name} ${studen.lastname}`}</td>
-                                                    <td>
+                                                    <>
                                                         {asistens.map((asistens)=>(
                                                             <>
                                                                 { (studen.student_id === asistens.student_id && asistens.status <= 2)
                                                                     &&
                                                                     <td>
                                                                         <input
-                                                                            style={{fontSize:"20px",width:"20px",textAlign:"center",border:"hidden",backgroundColor:"white"}}
+                                                                            style={{fontSize:"20px",width:"50px",textAlign:"center",border:"hidden", backgroundColor:"white"}}
                                                                             type="text"
-                                                                            className="form-control"
                                                                             defaultValue ={(asistens.status === 0 && "/")||(asistens.status === 1 && "•")||(asistens.status === 2 && "x")}
                                                                             className="text-center"
                                                                             disabled
@@ -371,7 +390,7 @@ export const TableStudens = () => {
                                                                 }
                                                             </>
                                                         ))}
-                                                    </td>
+                                                    </>
                                                     <td>
                                                         <button className={80.0 <= asissPorcc(studen.student_id) ? "btn btn-secondary" : "btn btn-warning"} disabled>
                                                             {asissPorcc(studen.student_id)}%
@@ -405,6 +424,7 @@ export const TableStudens = () => {
                                         text: "La clase se a finalizado",
                                         icon: "success",
                                         button: false,
+                                        timer:2000,
                                         value: finalizarCuatri()
                                     })
                                 }

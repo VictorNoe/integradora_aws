@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.0aee9474.css",
-    "main.js": "/static/js/main.e3ca0f3a.js",
+    "main.js": "/static/js/main.b85bd86b.js",
     "static/media/LogoMiniUtez.jpg": "/static/media/LogoMiniUtez.b81557058bda1529ad9a.jpg",
     "static/media/Equis.png": "/static/media/Equis.33c99eea61ca91f72d98.png",
     "static/media/iconoLogin.png": "/static/media/iconoLogin.d7189cd957a62b6e801a.png",
     "index.html": "/index.html",
     "main.0aee9474.css.map": "/static/css/main.0aee9474.css.map",
-    "main.e3ca0f3a.js.map": "/static/js/main.e3ca0f3a.js.map"
+    "main.b85bd86b.js.map": "/static/js/main.b85bd86b.js.map"
   },
   "entrypoints": [
     "static/css/main.0aee9474.css",
-    "static/js/main.e3ca0f3a.js"
+    "static/js/main.b85bd86b.js"
   ]
 }

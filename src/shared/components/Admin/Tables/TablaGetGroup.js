@@ -148,8 +148,9 @@ export const TablaGetGroup = () => {
                                         <Button className={clas.status === 1 ? "btn btn-primary" : "btn btn-secondary"} onClick={()=>(statusButtom())} disabled={clas.status === 0}>Editar</Button>
                                         :
                                         <>
-                                            <Button className="btn btn-danger" onClick={()=>(statusButtom())}>Cancelar</Button>
-                                            <Button className="btn btn-success" onClick={()=> (editTeacher())}>Confirma</Button>
+                                            <Button variant="danger" onClick={()=>(statusButtom())}>Cancelar</Button>
+                                            <Button variant="link"> </Button>
+                                            <Button variant="success" onClick={()=> (editTeacher())}>Confirma</Button>
                                         </>
                                     }
                                 </Navbar.Collapse>
@@ -170,14 +171,14 @@ export const TablaGetGroup = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {student.map((student)=>(
+                                {student.map((student,index)=>(
                                     <>
                                         {
                                             clas.status === 1
                                                 ?
                                                 <>
                                                     {(student.group.degree === clas.group.degree && student.group.letter === clas.group.letter) &&
-                                                        <tr style={{overflowY: "scroll", overflowX:"hidden", height:"100%"}}>
+                                                        <tr key={index} style={{overflowY: "scroll", overflowX:"hidden", height:"100%"}}>
                                                             <td>{numer++}</td>
                                                             <td>{student.name}</td>
                                                             <td>{student.lastname}</td>

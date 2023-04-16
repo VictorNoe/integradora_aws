@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Modal} from "react-bootstrap";
+import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 import swal from "sweetalert";
 import {localhost} from "../../../plugins/Axios";
 
@@ -123,19 +123,22 @@ export const Form_Carreer = (props) => {
 
                 <Modal.Body>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-
-                        <Form.Group className="mb-2" controlId="Name">
-                            <Form.Label required type="text">Acronimo:</Form.Label>
-                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                            <Form.Control placeholder="BD"  defaultValue={acronim} value={acronim} onChange={(e) => setAcronim(e.target.value)}  required/>
-                        </Form.Group>
-
-                        <Form.Group className="mb-2" controlId="Lastname">
-                            <Form.Label>Nombre:</Form.Label>
-                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                            <Form.Control required type="text" placeholder="Base de Datos" defaultValue={name} value={name} onChange={(e) => setName(e.target.value)} />
-                        </Form.Group>
-
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-2" controlId="Name">
+                                    <Form.Label required type="text">Acronimo:</Form.Label>
+                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                    <Form.Control placeholder="BD"  defaultValue={acronim} value={acronim} onChange={(e) => setAcronim(e.target.value)}  required/>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className="mb-2" controlId="Lastname">
+                                    <Form.Label>Nombre:</Form.Label>
+                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                    <Form.Control required type="text" placeholder="Base de Datos" defaultValue={name} value={name} onChange={(e) => setName(e.target.value)} />
+                                </Form.Group>
+                            </Col>
+                        </Row>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>

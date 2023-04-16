@@ -38,8 +38,8 @@ export const TablesMaterias = () => {
                     </tr>
                     </thead>
                     <tbody style={styles.Text}>
-                    {Materias.map((materia)=>(
-                        <tr>
+                    {Materias.map((materia,index)=>(
+                        <tr key={index}>
                             <td>{materia.id}</td>
                             <td>{materia.acronim}</td>
                             <td>{materia.name}</td>

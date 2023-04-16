@@ -37,8 +37,6 @@ function MyVerticallyCenteredModal(props) {
 }
 
 export const NavbarDocente = ({userLogin}) => {
-    console.log("============")
-    console.log(userLogin)
     const navigation = useNavigate();
     const [modalShow, setModalShow] = useState(false);
     const [users,setUser] = useState([]);

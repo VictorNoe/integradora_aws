@@ -37,7 +37,6 @@ export const MostrarQR = (props) => {
                     .then(async (response) =>
                         await response.json())
                     .then((data) => {
-                        console.log(data.data)
                     })
                     .catch((err) => {
                         getAsisten()

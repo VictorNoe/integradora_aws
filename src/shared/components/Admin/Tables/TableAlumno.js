@@ -38,9 +38,9 @@ export const TablesAlumno = () => {
                     </tr>
                     </thead>
                     <tbody style={styles.Text}>
-                    {Alumno.map((post)=>{
+                    {Alumno.map((post,index)=>{
                         return(
-                            <tr key={post.id}>
+                            <tr key={index}>
                                 <td>{post.name}</td>
                                 <td>{post.lastname}</td>
                                 <td>{post.id}</td>

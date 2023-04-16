@@ -13,6 +13,7 @@ export const Form_Class = (props) =>{
     const [subject, setSubject] = useState([])
     const [grup, setGrup] = useState([])
     const [clas, setClas] = useState([])
+    const [student, setStudent] = useState([])
 
     const allData = () => {
         props.onHide()
@@ -35,39 +36,54 @@ export const Form_Class = (props) =>{
         const res = await URLSERVIS("group/")
         setGrup(res.data.data)
     }
-    const getClass= async () => {
+    const getClass = async () => {
         const res = await URLSERVIS("clas/")
         setClas(res.data.data)
     }
+    const getStudents = async () => {
+        const res = await URLSERVIS("student/")
+        setStudent(res.data.data)
+    }
 
     useEffect(()=> {
-        getGrupos()
-        getDocente()
-        getSubject()
-        getClass()
+        getGrupos();
+        getDocente();
+        getSubject();
+        getClass();
+        getStudents();
     },[])
 
-    console.log(clas)
     const addClass = async () => {
         getGrupos()
         getDocente()
         getSubject()
         getClass()
+        getStudents()
         let status = false
+        let modal = false
         for (let i = 0; i < clas.length; i++) {
-            console.log(clas[i].group.id)
             if(clas[i].group.id === parseInt(group) && clas[i].subject.id === parseInt(materia)) {
                 return status = true , swal({
                     title: "Registro fallida",
                     text: "Esta clase ya existe",
                     icon: "error",
                     button: false,
-                    timer: 1000
+                    timer: 2000
                 })
             }
         }
 
-        console.log(status)
+        if(status === false){
+            for (let j = 0; j < student.length; j++) {
+                if(student[j].group.id === parseInt(group)){
+                    status = false
+                } else {
+                    status = true
+                    modal = true
+                }
+            }
+        }
+
         if(group !== null && materia !== null && profesor !== null && status !== true){
             await fetch(`http://${localhost}:8080/api/clas/`,{
                 method: "POST",
@@ -107,7 +123,18 @@ export const Form_Class = (props) =>{
                 .catch((err)=> {
                     console.log(err)
                 });
+
         }
+
+        if (modal === true) {
+            return swal({
+                title: "Registro fallida",
+                text: "No existen alumnos registrados para este grupo",
+                icon: "error",
+                button: false,
+                timer: 2000
+            });
+        };
 
     }
 

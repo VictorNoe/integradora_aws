@@ -43,9 +43,9 @@ export const TablesGrupos = () => {
                     </tr>
                     </thead>
                     <tbody style={styles.Text}>
-                    {Grupo.map((post)=>
+                    {Grupo.map((post,index)=>
                         (
-                            <tr>
+                            <tr key={index}>
                                 <td>{post.degree}</td>
                                 <td>{post.letter}</td>
                                 <td>{post.career.acronim}</td>

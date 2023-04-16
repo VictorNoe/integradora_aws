@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Col ,Row} from "react-bootstrap";
+import {Badge, Col, Row} from "react-bootstrap";
 import Card from 'react-bootstrap/Card';
 import {Link} from "react-router-dom";
 import {localhost} from "../../../plugins/Axios";
@@ -52,8 +52,8 @@ export const Card_class = (props) =>{
                                                     <div className="col-6" style={{color:"black"}}>{clases.group.year}</div>
                                                     {
                                                         clases.status === 1
-                                                            ? <div className="col-6" style={{color:"black"}}>Activo</div>
-                                                            : <div className="col-6" style={{color:"black"}}>Inactivo</div>
+                                                            ? <div className="col-6"><Badge bg="success" style={{color:"black"}}>Activo</Badge></div>
+                                                            : <div className="col-6"><Badge bg="danger" style={{color:"black"}}>Inactivo</Badge></div>
                                                     }
                                                 </div>
                                             </div>
