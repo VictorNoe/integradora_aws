@@ -53,6 +53,7 @@ export const Form_Class = (props) =>{
         getStudents();
     },[])
 
+    console.log(student)
     const addClass = async () => {
         getGrupos()
         getDocente()
@@ -63,20 +64,24 @@ export const Form_Class = (props) =>{
         let modal = false
         for (let i = 0; i < clas.length; i++) {
             if(clas[i].group.id === parseInt(group) && clas[i].subject.id === parseInt(materia)) {
-                return status = true , swal({
+                    status = true
+                    swal({
                     title: "Registro fallida",
                     text: "Esta clase ya existe",
                     icon: "error",
                     button: false,
                     timer: 2000
                 })
+                break;
             }
         }
 
         if(status === false){
             for (let j = 0; j < student.length; j++) {
                 if(student[j].group.id === parseInt(group)){
-                    status = false
+                    console.log("encontre alumno")
+                    status = false;
+                    break;
                 } else {
                     status = true
                     modal = true
@@ -84,7 +89,7 @@ export const Form_Class = (props) =>{
             }
         }
 
-        if(group !== null && materia !== null && profesor !== null && status !== true){
+        if(group !== "null" && materia !== "null" && profesor !== "null" && status !== true){
             await fetch(`http://${localhost}:8080/api/clas/`,{
                 method: "POST",
                 headers: {
@@ -168,7 +173,7 @@ export const Form_Class = (props) =>{
                       <Form.Label required type="text">Docente:</Form.Label>
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                       <Form.Select required aria-label="Default select example" value={profesor} onChange={(e) => (setProfesor(e.target.value))}>
-                          <option>Selecciona Docente</option>
+                          <option value="null">Selecciona Docente</option>
                           {docente.map((docente)=>(
                               <>
                                   {
@@ -185,7 +190,7 @@ export const Form_Class = (props) =>{
                       <Form.Label>Materia:</Form.Label>
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                       <Form.Select required aria-label="Default select example"  value={materia} onChange={(e) => (setMateria(e.target.value))}>
-                          <option>Selecciona Materia</option>
+                          <option value="null">Selecciona Materia</option>
                           {subject.map((subject)=>(
                               <option value={subject.id}>{subject.name}</option>
                           ))}
@@ -196,9 +201,9 @@ export const Form_Class = (props) =>{
                       <Form.Label>Grupo:</Form.Label>
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                       <Form.Select required aria-label="Default select example" value={group} onChange={(e) => (setGroup(e.target.value))}>
-                          <option>Selecciona Grupo</option>
+                          <option value="null">Selecciona Grupo</option>
                           {grup.map((grup)=>(
-                              <option value={grup.id}>{grup.degree}-.{grup.letter} {grup.career.acronim}</option>
+                              <option value={grup.id}>{grup.degree}-.{grup.letter} {grup.career.name}</option>
                           ))}
                       </Form.Select>
                   </Form.Group>

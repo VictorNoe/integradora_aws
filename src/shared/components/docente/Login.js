@@ -17,35 +17,45 @@ export const Login = () => {
     useEffect(()=> {
         if(sessionStorage.getItem('email')){
             if (sessionStorage.getItem('role') === "1"){
-                navigate(-1)
+                navigate("loginAdm")
             }
             if (sessionStorage.getItem('role') === "0"){
-                navigate(-1)
+                navigate("loginDte")
             }
         }
     },[])
 
     const PreceedLogin = (e) => {
-        e.preventDefault();
         /*
-        valida el token
+             console.log(password)
             if(validate()) {
-            const requestOptions = {
+            fetch(`http://${localhost}:8080/api/login`,{
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
                 body: JSON.stringify({
-                    email: {email} ,
-                    password: {password}
+                    email: `${email}`,
+                    password: `${password}`,
                 })
-            };
-            fetch('http://localhost:8000/api/users/', requestOptions)
+            })
                 .then(response =>{
                     return response.json()
                 })
-                .then(result => console.log(result.data) );
+                .then(result => {
+                    console.log(result.data);
+                } )
+                .catch((err)=>{
+                    console.log(err)
+                });
             }
          */
-        if(validate()) {
+        e.preventDefault();
+
+         if(validate()) {
             console.log('proceed');
             fetch(`http://${localhost}:8080/api/users/`+email).then((res) => {
                 return res.json();
@@ -87,7 +97,6 @@ export const Login = () => {
                 });
             });
         }
-
     }
 
     const statePassword = () => {
@@ -117,7 +126,7 @@ export const Login = () => {
                    <div className="col-8 abs-center">
                        <form className="row g-3 needs-validation" onSubmit={PreceedLogin}>
                            <div className="mb-3">
-                               <h1>LOGIN</h1>
+                               <h1>Iniciar Sesión</h1>
                            </div>
                            <div className="mb-3">
                                <label htmlFor="exampleInputEmail1" className="form-label">Correo electronico</label>

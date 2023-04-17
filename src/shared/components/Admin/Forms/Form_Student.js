@@ -218,7 +218,7 @@ export const Form_Student = (props) =>{
                       <Form.Select aria-label="Default select example" value={group} onChange={(e)=>setGroup(e.target.value)}>
                           <option>Selecsiona grado, grupo y carrera</option>
                           {groupGet.map((groupG)=>(
-                              <option value={groupG.id}>{groupG.degree}-.{groupG.letter} {groupG.career.acronim}</option>
+                              <option value={groupG.id}>{groupG.degree}-.{groupG.letter} {groupG.career.name}</option>
                           ))}
                       </Form.Select>
                   </Form.Group>

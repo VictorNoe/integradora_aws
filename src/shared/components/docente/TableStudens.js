@@ -13,7 +13,6 @@ export const TableStudens = () => {
     const {id} = useParams();
     const navigation = useNavigate();
     const time = new Date();
-
     const { seconds, minutes, restart } = useTimer({ time, onExpire: () => console.warn('onExpire called')});
     const fecha = new Date();
     const [post, setPost] = useState([]);
@@ -25,6 +24,24 @@ export const TableStudens = () => {
     const [getQR, setGetQR] = useState([]);
     const [inableeDoce, setInableeDoce] = useState([]);
     const [fechas, setFechas] = useState([]);
+
+    const getAsistence1 = async () => {
+        fetch(`http://${localhost}:8080/api/asistence/${id}`).then((res) => {
+            return res.json();
+        }).then((resp) => {
+            setAsistens(resp.data)
+            var hash = {};
+            resp.data = resp.data.filter(function(current) {
+                var exists = !hash[current.student_id];
+                hash[current.student_id] = true;
+                return exists;
+            });
+            setInableeDoce(resp.data);
+
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
 
     useEffect(() => {
 
@@ -45,27 +62,9 @@ export const TableStudens = () => {
         }
         getStudens();
 
-        const getAsistence = async () => {
-            fetch(`http://${localhost}:8080/api/asistence/${id}`).then((res) => {
-                return res.json();
-            }).then((resp) => {
-                setAsistens(resp.data)
-                var hash = {};
-                resp.data = resp.data.filter(function(current) {
-                    var exists = !hash[current.student_id];
-                    hash[current.student_id] = true;
-                    return exists;
-                });
-                setInableeDoce(resp.data);
-
-            }).catch((err)=>{
-                console.log(err)
-            })
-        }
-
         getDate()
 
-        getAsistence()
+        getAsistence1()
 
         if (clases.status !== 1){
             setTimeout(()=>{
@@ -146,8 +145,9 @@ export const TableStudens = () => {
                 await localStorage.setItem("status", data.data.id)
                 setGetQR(data.data)
                 setPost(data.data);
-                getAsistence()
                 getDate()
+                getAsistence()
+                getAsistence1()
             }).catch((err) => {
                 console.log(err)
             });
@@ -156,7 +156,7 @@ export const TableStudens = () => {
     //Valida el tiempo
     const times = () => {
         const time = new Date();
-        time.setSeconds(time.getSeconds() + 15);
+        time.setSeconds(time.getSeconds() + 900);
         restart(time)
     }
 

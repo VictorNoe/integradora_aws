@@ -128,7 +128,7 @@ export const Form_Group = (props) =>{
         let validate = false;
         for (let i = 0; i < groupGet.length; i++) {
             console.log("pase  aqui 1")
-            if(groupGet[i].degree === parseInt(degree) && groupGet[i].letter === letter && groupGet[i].career.id === parseInt(career) && groupGet[i].year === parseInt(year)){
+            if(groupGet[i].degree === parseInt(degree) && groupGet[i].letter === letter.toUpperCase() && groupGet[i].career.id === parseInt(career) && groupGet[i].year === parseInt(year)){
                 return(
                     validate = true,
                     onGroup(),
@@ -153,7 +153,7 @@ export const Form_Group = (props) =>{
                 },
                 body: JSON.stringify({
                     "degree": `${degree}`,
-                    "letter": `${letter}`,
+                    "letter": `${letter.toUpperCase()}`,
                     "year": `${year}`,
                     "career": {
                         "id": `${career}`,

@@ -34,6 +34,7 @@ export const TablesAlumno = () => {
                         <th>Matricula</th>
                         <th>Cuatrimestre</th>
                         <th>Grupos</th>
+                        <th>Carrera</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
@@ -46,6 +47,7 @@ export const TablesAlumno = () => {
                                 <td>{post.id}</td>
                                 <td>{post.group.degree}</td>
                                 <td>{post.group.letter}</td>
+                                <td>{post.group.career.name}</td>
                                 <td>
                                     <FaRegEdit style={styles.Icon} onClick={()=>(setModalShow(true),setIdStudens(post.id),setState(true))}/>
                                 </td>
